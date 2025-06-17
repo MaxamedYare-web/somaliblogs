@@ -1,0 +1,113 @@
+import { Navigate, NavLink } from "react-router";
+import { useAuth } from "../lib/BlogContext";
+import { useState } from "react";
+import userProfile from "../assets/profile-user.png"
+
+export const HeaderPage = () => {
+  const { isAuthentication, Logout } = useAuth();
+  const [isProfileClick, setIsProfileClick] = useState(false);
+  const {user,getProfieImage,getUserData} = useAuth()
+getUserData()
+const email = user?.email
+const username = email?.split("@")[0]
+
+  const handleLogout = () => {
+    Logout();
+    return <Navigate to="/login" />;
+  };
+  return (
+    <>
+    <header>
+        <nav className="flex justify-around border-b-2 border-b-sky-400 shadow-lg text-[18px]  font-bold p-3">
+        <div className="space-x-3">
+          <NavLink
+            className={({ isActive }) =>
+              `p-1 px-3 rounded ${isActive ? "bg-orange-500 text-white" : ""}`
+            }
+            to="/"
+          >
+            Home
+          </NavLink>
+          {!isAuthentication ? (
+            <NavLink
+              to="/about"
+              className={({ isActive }) =>
+                `p-1 px-2 rounded ${
+                  isActive ? "bg-orange-500 text-white" : "bg-white"
+                }`
+              }
+            >
+              About
+            </NavLink>
+          ) : (
+            <NavLink
+              className={({ isActive }) =>
+                `p-1 px-3 rounded ${isActive ? "bg-orange-500 text-white" : ""}`
+              }
+              to={"/dashboard"}
+            >
+              Dashboard
+            </NavLink>
+          )}
+        </div>
+
+        <div className="space-x-6">
+          {!isAuthentication ? (
+            <>
+              <NavLink
+                className={({ isActive }) =>
+                  `p-1 px-3 rounded ${isActive && "bg-orange-500 text-white"}`
+                }
+                to="/register"
+              >
+                Register
+              </NavLink>
+              <NavLink
+                className={({ isActive }) =>
+                  `p-1 px-3 rounded ${isActive && "bg-orange-500 text-white"}`
+                }
+                to="/login"
+              >
+                Login
+              </NavLink>
+            </>
+          ) : (
+            <>
+              <div className="flex items-center space-x-3 relative">
+                <div className="flex items-center space-x-2">
+                  <h1 className="text-[15px] sm:text-[18px]">Welcome:</h1>
+                  <h1 className="text-[10px] first-letter:capitalize sm:text-[18px]">
+                     {username ? username : "loading"}
+                  </h1>
+                  <img
+                    onClick={() => setIsProfileClick(!isProfileClick)}
+                    className={`h-[40px] w-[40px] ${!getProfieImage && "bg-white"} rounded-[100%]`} 
+                    src={getProfieImage ? getProfieImage : userProfile}
+                    alt=""
+                  />
+                </div>
+
+                {
+                  isProfileClick && (<div className="absolute z-50 top-14 rounded w-[300px] right-5 p-3 bg-orange-400 text-white">
+                  <div className="space-y-4 flex flex-col">
+                    <NavLink to="/editprofile" className="cursor-pointer text-center hover:text-orange-200 transition duration-1000">
+                      Edit Profile
+                    </NavLink>
+                    <button
+                      onClick={handleLogout}
+                      className="bg-orange-500 hover:bg-orange-300 transition duration-1000 cursor-pointer p-1 px-5 rounded text-white"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                </div>)
+                }
+              </div>
+            </>
+          )}
+        </div>
+      </nav>
+    </header>
+    </>
+  );
+};
