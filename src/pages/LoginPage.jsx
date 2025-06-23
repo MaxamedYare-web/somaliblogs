@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { SubaPaseAuth } from "../lib/supabase";
 import toast from "react-hot-toast";
-import { Navigate, useNavigate } from "react-router";
+import { Navigate, NavLink, useNavigate } from "react-router";
 import { useAuth } from "../lib/BlogContext";
 import { FooterPage } from "./FooterPage";
 
@@ -85,6 +85,10 @@ if(error?.message){
           <button className="w-full bg-orange-500 p-2 rounded text-white font-bold text-[18px]">
             Login
           </button>
+          <div className="flex justify-center gap-2">
+            <p>You don't have account? click</p>
+            <NavLink to="/register" className="text-orange-200 text-[18px] font-bold">Register</NavLink>
+          </div>
         </form>
       </div>
        <footer className={`inset-x-0 absolute ${themeDarkColor.darkBg}`}>
