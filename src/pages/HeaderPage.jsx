@@ -37,7 +37,7 @@ export const HeaderPage = () => {
           <div className="space-x-6">
             {!isAuthentication ? (
               <>
-              <div className="items-center hidden sm:flex">
+              <div className="items-center  hidden md:flex">
                   <NavLink
               className={({ isActive }) =>
                 `p-1 px-3 rounded ${isActive ? "bg-orange-500 text-white" : ""}`
@@ -89,7 +89,7 @@ export const HeaderPage = () => {
                     Home
                   </NavLink>
                   <NavLink
-                    to="/about"
+                    to="about"
                     className={({ isActive }) =>
                       `p-1 px-2 rounded ${
                         isActive ? "bg-orange-500 text-white" : ""

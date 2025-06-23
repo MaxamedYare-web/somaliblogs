@@ -49,12 +49,11 @@ if(error?.message){
 }
 }
 
-
     return(  <>
-      <div className={`flex justify-center  h-screen mt-5 p-3`}>
+      <div className={`flex flex-col lg:items-center sm:top-[6%] pt-[1px]  ${themeDarkColor.darkBg} top-[6%] justify-center absolute md:top-[6%] -z-1 inset-0  mt-5 p-3`}>
         <form
           onSubmit={HandleLogin}
-          className={`space-y-3 w-full shadow-2xl mb-auto  md:w-[55%] p-5 ${themeDarkColor.darkBg} rounded`}
+          className={`space-y-3 w-full ${themeDarkColor.darkBg} shadow-2xl lg:w-[70%] mb-auto mt-20 md:mt-10 ${themeDarkColor.box}  p-5  rounded`}
         >
             <div className="mb-5">
               <h1 className="text-2xl font-bold text-center">Welcome Back!</h1>
@@ -90,10 +89,14 @@ if(error?.message){
             <NavLink to="/register" className="text-orange-200 text-[18px] font-bold">Register</NavLink>
           </div>
         </form>
-      </div>
-       <footer className={`inset-x-0 absolute ${themeDarkColor.darkBg}`}>
+
+        <div>
+           <footer className={`absolute ${themeDarkColor.darkBg} inset-x-0`}>
               <FooterPage/>
             </footer>
+        </div>
+      </div>
+      
     </>)
 }
 

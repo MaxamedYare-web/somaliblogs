@@ -27,12 +27,13 @@ const App = () => {
       <div className="px-2 sm:px-50">
         <main className="">
         <Routes>
+          
           <Route path="/" element={<HomePage />} />
           <Route path="/dashboard" element={<BlogProtect element={<Dashboard/>}/>}/>
           <Route path="/create_blog" element={<BlogProtect element={<CreateBlog/>} />}/>
           <Route path="/register" element={<RegisterPage/>}/>
           <Route path="/login" element={<LoginPage/>}/>
-          <Route path="/about" element={<AboutPage/>}/>
+          <Route path="about" element={<AboutPage/>}/>
           <Route path="/editprofile" element={<BlogProtect element={<EditProfilePage/>}/>}/>
           <Route path="/VeiwsYrAllBlogs" element={<BlogProtect element={<VeiwsYrAllBlogs/>} />}/>
           <Route path="/VeiwsYrAllBlogs/:read_more" element={<BlogProtect element={<ReadMore/>}/>}/>
