@@ -74,7 +74,7 @@ export const HeaderPage = () => {
                 <div
                   className={`flex ${
                     isBars ? "block" : "hidden"
-                  } md:hidden flex-col p-3 w-[400px] right-5 mt-5 ${
+                  } md:hidden flex-col p-3 w-[350px] right-3 mt-5 ${
                     themeDarkColor.darkBg
                   } ${themeDarkColor.box} absolute z-10`}
                 >
