@@ -4,6 +4,7 @@ import { useState } from "react";
 import userProfile from "../assets/profile-user.png";
 import logoImage from "../assets/somaliblogs_logo.png";
 import { FaBars } from "react-icons/fa";
+import { IoIosCloseCircleOutline } from "react-icons/io";
 
 export const HeaderPage = () => {
   const { isAuthentication, Logout } = useAuth();
@@ -18,9 +19,7 @@ export const HeaderPage = () => {
     return <Navigate to="/login" />;
   };
 
-  const clickBars = () => {
-    setIsBars(!isBars);
-  };
+ 
 
   return (
     <>
@@ -68,11 +67,14 @@ export const HeaderPage = () => {
                   Login
                 </NavLink>
               </div>
-                <FaBars onClick={clickBars} className="text-4xl md:hidden" />
+              {
+                isBars ? <IoIosCloseCircleOutline onClick={()=>setIsBars(false)} className="text-4xl md:hidden"  /> : <FaBars onClick={()=>setIsBars(true)} className="text-4xl md:hidden" />
+              }
+                
                 <div
                   className={`flex ${
                     isBars ? "block" : "hidden"
-                  } md:hidden flex-col p-3 w-[300px] right-5 mt-4 ${
+                  } md:hidden flex-col p-3 w-[400px] right-5 mt-5 ${
                     themeDarkColor.darkBg
                   } ${themeDarkColor.box} absolute z-10`}
                 >
