@@ -10,13 +10,21 @@ import { GrBlog } from "react-icons/gr";
 import { IoNewspaperOutline } from "react-icons/io5";
 import { FooterPage } from "./FooterPage";
 import { SubaPaseAuth } from "../lib/supabase";
-import userProfile from "../assets/profile-user.png"
+import userProfile from "../assets/profile-user.png";
+import { IoIosStar } from "react-icons/io";
 export const HomePage = () => {
   const imageArray = [imageOne, image2, image3, image4, image5];
   const [currentIndex, setCurrentIndex] = useState(0);
   const [nextIndex, setNextIndex] = useState(1);
-  const { themeDarkColor, isAuthentication, sixBlogsHome, setSixBlogsHome, lastestPosts, setLatestPosts } =
-    useAuth();
+  const [latestReviews, setLatestReviews] = useState(null);
+  const {
+    themeDarkColor,
+    isAuthentication,
+    sixBlogsHome,
+    setSixBlogsHome,
+    lastestPosts,
+    setLatestPosts,
+  } = useAuth();
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -40,16 +48,20 @@ export const HomePage = () => {
       .order("created_at", { ascending: false })
       .limit(3);
     setLatestPosts(latestData);
+    const { data: userReviews } = await SubaPaseAuth.from(
+      "user_reviews"
+    ).select("*");
+    // console.log(userReviews)
+    setLatestReviews(userReviews);
   };
 
-  
   return (
     <>
       <section
         className={`h-screen bg-no-repeat bg-cover bg-center absolute inset-x-0`}
         style={{
           backgroundImage: `linear-gradient(90deg, rgba(8,41,89,0.8) 0%, rgba(8,41,89,0.9) 35%, rgba(8,41,89,0.9) 100%), url(${imageArray[currentIndex]})`,
-          opacity: nextIndex !== currentIndex ? 1 : 0.9,
+          opacity: nextIndex !== currentIndex ? 1 : 1,
         }}
       >
         <div className="flex justify-center items-center h-screen">
@@ -169,6 +181,85 @@ export const HomePage = () => {
             </div>
           </div>
         </div>
+        {/* la test review */}
+        <div
+          className={`${themeDarkColor.darkBg} flex flex-col justify-center items-center p-2`}
+        >
+          <article>
+            <p className="text-center">Latest Reviews</p>
+            <h1 className="text-2xl sm:text-4xl font-bold">
+              What Our Customers Says
+            </h1>
+          </article>
+          <div className="relative w-full overflow-hidden mt-5">
+            <section className="flex pb-4 mt-5 mask-linear">
+              {/* First set of reviews (original) */}
+              <div className="flex  gap-4 animate-[scroll_70s_linear_infinite]">
+                {latestReviews?.map((LR, index) => (
+                  <div
+                    key={`original-${index}`}
+                    className={`${themeDarkColor.box} p-3 hover:shadow-lg w-[600px] `}
+                  >
+                    {/* Your review content */}
+                    <div className="flex items-center gap-3">
+                      <img
+                        className="w-[100px] h-[100px] rounded-full"
+                        src={LR.user_profile ? LR.user_profile : userProfile}
+                        alt=""
+                      />
+                      <h1 className="first-letter:uppercase">{LR.username}</h1>
+                    </div>
+                    <p className="max-w-[500px]">{LR.user_content}</p>
+                    <div className="flex items-center gap-2 mt-3">
+                      <p className="text-orange-200 font-bold">Rates:</p>
+                      <div className="flex">
+                        {LR.user_rate.map((rat,index) => (
+                          <strong key={index} className="text-orange-500">
+                            <IoIosStar />
+                          </strong>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          </div>
+          <div className="relative w-full overflow-hidden ">
+            <section className="flex pb-4 mt-5 mask-linearTwo">
+              {/* First set of reviews (original) */}
+              <div className="flex  gap-4 animate-[scrollTwo_80s_linear_infinite]">
+                {latestReviews?.map((LR, index) => (
+                  <div
+                    key={`original-${index}`}
+                    className={`${themeDarkColor.box} p-3 hover:shadow-lg w-[600px] `}
+                  >
+                    {/* Your review content */}
+                    <div className="flex items-center gap-3">
+                      <img
+                        className="w-[100px] h-[100px] rounded-full"
+                        src={LR.user_profile ? LR.user_profile : userProfile}
+                        alt=""
+                      />
+                      <h1 className="first-letter:uppercase">{LR.username}</h1>
+                    </div>
+                    <p className="max-w-[500px]">{LR.user_content}</p>
+                    <div className="flex items-center gap-2 mt-3">
+                      <p className="text-orange-200 font-bold">Rates:</p>
+                      <div className="flex">
+                        {LR.user_rate.map((rat) => (
+                          <strong className="text-orange-500">
+                            <IoIosStar />
+                          </strong>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          </div>
+        </div>
         {/* latest blogs */}
         <div className={`px-10 py-3 ${themeDarkColor.darkBg} sm:px-15`}>
           <article className="flex items-center justify-center space-x-2">
@@ -176,40 +267,41 @@ export const HomePage = () => {
             <IoNewspaperOutline />
           </article>
           <div className="grid grid-cols-1 mt-5 gap-3">
-        {
-          lastestPosts?.map((post)=>(
-                <div key={post.id}
-              className={`w-[100%] sm:grid items-center justify-center sm:gap-5 sm:grid-cols-1 md:grid-cols-2 ${themeDarkColor.box} duration-300 hover:-translate-y-2 p-3 rounded hover:shadow-lg`}
-            >
-              <img
-                src={post.blog_image}
-                className="w-[450px] lg:w-[650px] h-[300px]  duration-500 hover:scale-101 rounded"
-                alt=""
-              />
-            <div>
-                <p className="mt-2">
-                
-                {post?.content?.length > 500 ? (
-                  <>
-                    {post?.content?.substring(0, 500)}{" "}
-                    <NavLink
+            {lastestPosts?.map((post) => (
+              <div
+                key={post.id}
+                className={`w-[100%] sm:grid items-center justify-center sm:gap-5 sm:grid-cols-1 md:grid-cols-2 ${themeDarkColor.box} duration-300 hover:-translate-y-2 p-3 rounded hover:shadow-lg`}
+              >
+                <img
+                  src={post.blog_image}
+                  className="w-[450px] lg:w-[650px] h-[300px]  duration-500 hover:scale-101 rounded"
+                  alt=""
+                />
+                <div>
+                  <p className="mt-2">
+                    {post?.content?.length > 500 ? (
+                      <>
+                        {post?.content?.substring(0, 500)}{" "}
+                        <NavLink
                           to={`/latestposts/${post.id}`}
                           className="text-orange-300 text-[18px] font-bold"
                         >
                           Reading more...
                         </NavLink>
-                  </>
-                ) : (
-                  post?.content?.substring(0, 500)
-                )}
-              </p>
-              <hr className="p-2 mt-3"/>
-              {/* user writer */}
-               <div className="flex justify-between">
+                      </>
+                    ) : (
+                      post?.content?.substring(0, 500)
+                    )}
+                  </p>
+                  <hr className="p-2 mt-3" />
+                  {/* user writer */}
+                  <div className="flex justify-between">
                     <div className="flex items-center gap-3">
                       <img
                         src={post.user_image ? post.user_image : userProfile}
-                        className={`w-[70px] ${!post.user_image && "bg-white"} h-[70px] rounded-full`}
+                        className={`w-[70px] ${
+                          !post.user_image && "bg-white"
+                        } h-[70px] rounded-full`}
                         alt=""
                       />
                       <p>{post.user_name}</p>
@@ -234,52 +326,11 @@ export const HomePage = () => {
                       </div>
                     </div>
                   </div>
-            </div>
-              
-            </div>
-          ))
-        }
-            {/* <div
-              className={`w-[100%] sm:grid items-center justify-center sm:gap-5 sm:grid-cols-1 md:grid-cols-2 ${themeDarkColor.box} duration-300 hover:-translate-y-2 p-3 rounded hover:shadow-lg`}
-            >
-              <img
-                src={image2}
-                className="w-[450px] lg:w-[650px] h-[300px]  duration-500 hover:scale-101 rounded"
-                alt=""
-              />
-              <p className="mt-2">
-                $
-                {content.length > 500 ? (
-                  <>
-                    ${content.substring(0, 500)}{" "}
-                    <strong className="text-red-700">Reading more...</strong>
-                  </>
-                ) : (
-                  content.substring(0, 500)
-                )}
-              </p>
-            </div>
-            <div
-              className={`w-[100%] sm:grid items-center justify-center sm:gap-5 sm:grid-cols-1 md:grid-cols-2 ${themeDarkColor.box} duration-300 hover:-translate-y-2 p-3 rounded hover:shadow-lg`}
-            >
-              <img
-                src={image2}
-                className="w-[450px] lg:w-[650px] h-[300px]  duration-500 hover:scale-101 rounded"
-                alt=""
-              />
-              <p className="mt-2">
-                $
-                {content.length > 500 ? (
-                  <>
-                    ${content.substring(0, 500)}{" "}
-                    <strong className="text-red-700">Reading more...</strong>
-                  </>
-                ) : (
-                  content.substring(0, 500)
-                )}
-              </p>
-            </div> */}
+                </div>
+              </div>
+            ))}
           </div>
+          {/* latest reviews */}
         </div>
         <footer className={`inset-x-0 absolute ${themeDarkColor.darkBg}`}>
           <FooterPage />

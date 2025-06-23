@@ -15,6 +15,7 @@ import { useAuth } from "./lib/BlogContext";
 import { VeiwSingleBlog } from "./pages/VeiwsSingleBlog";
 import { ShowAllBlogs } from "./pages/ShowAllBlogs";
 import { ReadLatestPosts } from "./pages/ReadLatestPosts";
+import { AddReview } from "./users/AddReview";
 
 
 
@@ -38,6 +39,7 @@ const App = () => {
           <Route path="VeiwSingleBlog/:blogid" element={<BlogProtect element={<VeiwSingleBlog/>}/>}/>
           <Route path="all-blogs" element={<ShowAllBlogs/>}/>
           <Route path="/latestposts/:postid" element={<ReadLatestPosts/>}/>
+          <Route path="/addreview" element={<BlogProtect element={<AddReview/>}/>}/>
         </Routes>
       </main>
       </div>

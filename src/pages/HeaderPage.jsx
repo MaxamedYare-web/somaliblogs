@@ -6,7 +6,7 @@ import userProfile from "../assets/profile-user.png"
 export const HeaderPage = () => {
   const { isAuthentication, Logout } = useAuth();
   const [isProfileClick, setIsProfileClick] = useState(false);
-  const {user,getProfieImage,getUserData} = useAuth()
+  const {user,getProfieImage,getUserData,themeDarkColor} = useAuth()
 getUserData()
 const email = user?.email
 const username = email?.split("@")[0]
@@ -33,7 +33,7 @@ const username = email?.split("@")[0]
               to="/about"
               className={({ isActive }) =>
                 `p-1 px-2 rounded ${
-                  isActive ? "bg-orange-500 text-white" : "bg-white"
+                  isActive ? "bg-orange-500 text-white" : ""
                 }`
               }
             >
@@ -88,10 +88,13 @@ const username = email?.split("@")[0]
                 </div>
 
                 {
-                  isProfileClick && (<div className="absolute z-50 top-14 rounded w-[300px] right-5 p-3 bg-orange-400 text-white">
+                  isProfileClick && (<div className={`absolute z-50 top-14 rounded w-[300px] right-5 p-3 ${themeDarkColor.darkBg} text-white`}>
                   <div className="space-y-4 flex flex-col">
-                    <NavLink to="/editprofile" className="cursor-pointer text-center hover:text-orange-200 transition duration-1000">
+                    <NavLink to="/editprofile" className="cursor-pointer border-b-2 text-center hover:text-orange-200 transition duration-1000">
                       Edit Profile
+                    </NavLink>
+                    <NavLink to="/addreview" className="text-center border-b-2 hover:text-orange-200 transition duration-1000">
+                      Add Review
                     </NavLink>
                     <button
                       onClick={handleLogout}

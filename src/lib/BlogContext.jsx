@@ -11,6 +11,7 @@ const BlogProvider = ({ children }) => {
   const [sixBlogsHome,setSixBlogsHome] = useState(null)
   const [allBlogsHome,setAllBlogsHome] = useState(null)
     const [lastestPosts, setLatestPosts] = useState([]);
+   
   
 
   useEffect(() => {
@@ -73,9 +74,7 @@ const BlogProvider = ({ children }) => {
     allBlogsHome,
     setAllBlogsHome,
     lastestPosts,
-     setLatestPosts
-   
-
+     setLatestPosts,
   };
 
   return <BlogContext.Provider value={value}>{children}</BlogContext.Provider>;
